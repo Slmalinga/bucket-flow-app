@@ -3,68 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoneyBasics | Learn to Budget</title>
+    <title>MoneyBasics | Precise Budgeting</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <style>
-        .bucket-transition { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bucket-transition { transition: all 0.3s ease; }
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
 <body class="bg-slate-50 font-sans">
     <div id="app" class="max-w-md mx-auto min-h-screen flex flex-col p-6">
         
-        <div class="h-20 bg-slate-200 rounded mb-8 flex items-center justify-center text-xs text-slate-400 border-2 border-dashed border-slate-300">
-            Education Sponsor Ad
+        <div class="h-20 bg-slate-200 rounded mb-8 flex items-center justify-center text-[10px] text-slate-400 border-2 border-dashed border-slate-300">
+            [PLACE AD CODE HERE]
         </div>
 
-        <header class="text-center mb-10">
-            <h1 class="text-3xl font-black text-slate-800">MoneyBasics</h1>
-            <p class="text-slate-500">Budgeting for people who hate budgeting.</p>
+        <header class="text-center mb-6">
+            <h1 class="text-3xl font-black text-slate-800 tracking-tight">MoneyBasics</h1>
+            <p class="text-slate-500 text-sm">Type your pay. See your life.</p>
         </header>
 
-        <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-200/50 mb-8">
-            <p class="text-center text-xs font-bold text-slate-400 uppercase tracking-tighter mb-2">My Monthly Paycheck</p>
-            <div class="text-5xl font-black text-center text-indigo-600 mb-6">${{ income.toLocaleString() }}</div>
-            <input type="range" min="1000" max="15000" step="100" v-model="income" class="w-full h-3 bg-indigo-100 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+        <div class="bg-white p-6 rounded-3xl shadow-xl shadow-slate-200/60 mb-8 border border-slate-100">
+            <p class="text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Your Monthly Take-Home Pay</p>
+            <div class="relative flex items-center justify-center">
+                <span class="absolute left-4 text-3xl font-black text-slate-300">$</span>
+                <input 
+                    type="number" 
+                    v-model.number="income" 
+                    placeholder="0.00"
+                    class="w-full text-center text-5xl font-black text-indigo-600 focus:outline-none bg-transparent py-2 px-8"
+                >
+            </div>
+            <p class="text-center text-[10px] text-indigo-300 mt-2 font-medium">Results update as you type</p>
         </div>
 
-        <div class="space-y-4">
-            <button @click="active = 'needs'" :class="{'ring-4 ring-blue-200': active === 'needs'}" class="w-full bg-blue-600 text-left p-5 rounded-2xl text-white shadow-lg bucket-transition">
+        <div class="space-y-3">
+            <button @click="active = 'needs'" class="w-full text-left p-5 rounded-2xl text-white shadow-md bucket-transition" :class="active === 'needs' ? 'bg-blue-600 ring-4 ring-blue-100' : 'bg-blue-500 opacity-90 hover:opacity-100'">
                 <div class="flex justify-between items-center">
-                    <span class="font-bold">🏠 The Must-Haves (50%)</span>
-                    <span class="text-2xl font-black">${{ (income * 0.5).toLocaleString() }}</span>
+                    <span class="font-bold flex items-center gap-2">🏠 Needs</span>
+                    <span class="text-xl font-black">${{ (income * 0.5).toLocaleString() }}</span>
                 </div>
-                <p v-if="active === 'needs'" class="mt-4 text-sm bg-blue-700 p-3 rounded-lg">
-                    <b>What is this?</b> Things you CANNOT skip. Rent, electricity, basic groceries, and car insurance.
-                </p>
+                <div v-if="active === 'needs'" class="mt-3 text-xs bg-blue-700/50 p-3 rounded-xl leading-relaxed">
+                    <b>50% of your pay.</b> Use this for Rent, Groceries, Utilities, and Car Insurance. These are your "Non-Negotiables."
+                </div>
             </button>
 
-            <button @click="active = 'wants'" :class="{'ring-4 ring-emerald-200': active === 'wants'}" class="w-full bg-emerald-500 text-left p-5 rounded-2xl text-white shadow-lg bucket-transition">
+            <button @click="active = 'wants'" class="w-full text-left p-5 rounded-2xl text-white shadow-md bucket-transition" :class="active === 'wants' ? 'bg-emerald-500 ring-4 ring-emerald-100' : 'bg-emerald-400 opacity-90 hover:opacity-100'">
                 <div class="flex justify-between items-center">
-                    <span class="font-bold">🍕 The Fun Stuff (30%)</span>
-                    <span class="text-2xl font-black">${{ (income * 0.3).toLocaleString() }}</span>
+                    <span class="font-bold flex items-center gap-2">🍕 Wants</span>
+                    <span class="text-xl font-black">${{ (income * 0.3).toLocaleString() }}</span>
                 </div>
-                <p v-if="active === 'wants'" class="mt-4 text-sm bg-emerald-600 p-3 rounded-lg">
-                    <b>What is this?</b> Things that make life sweet but aren't vital. Dining out, Netflix, that new shirt, or a concert.
-                </p>
+                <div v-if="active === 'wants'" class="mt-3 text-xs bg-emerald-600/50 p-3 rounded-xl leading-relaxed">
+                    <b>30% of your pay.</b> Use this for Netflix, Dining out, Hobbies, and Shopping. This is your "Fun Fund."
+                </div>
             </button>
 
-            <button @click="active = 'future'" :class="{'ring-4 ring-amber-200': active === 'future'}" class="w-full bg-amber-400 text-left p-5 rounded-2xl text-white shadow-lg bucket-transition">
+            <button @click="active = 'future'" class="w-full text-left p-5 rounded-2xl text-white shadow-md bucket-transition" :class="active === 'future' ? 'bg-amber-400 ring-4 ring-amber-100 text-slate-900' : 'bg-amber-300 opacity-90 hover:opacity-100 text-slate-800'">
                 <div class="flex justify-between items-center">
-                    <span class="font-bold">💰 Future You (20%)</span>
-                    <span class="text-2xl font-black">${{ (income * 0.2).toLocaleString() }}</span>
+                    <span class="font-bold flex items-center gap-2">💰 Future</span>
+                    <span class="text-xl font-black">${{ (income * 0.2).toLocaleString() }}</span>
                 </div>
-                <p v-if="active === 'future'" class="mt-4 text-sm bg-amber-500 p-3 rounded-lg text-slate-900">
-                    <b>What is this?</b> Money for your "Safety Net" or paying off big debts. This is how you stop living paycheck-to-paycheck.
-                </p>
+                <div v-if="active === 'future'" class="mt-3 text-xs bg-amber-500/50 p-3 rounded-xl leading-relaxed">
+                    <b>20% of your pay.</b> Use this for Savings, Debt, and Investing. This is how you build a "Safety Net."
+                </div>
             </button>
         </div>
 
-        <p class="mt-10 text-center text-xs text-slate-400 italic">Tap a bucket to learn what's inside!</p>
-
-        <div class="mt-auto pt-10">
-            <div class="bg-slate-100 p-4 text-center text-[10px] text-slate-400 rounded">
-                ADVERTISEMENT - SUPPORT OUR FREE TOOLS
+        <div class="mt-auto pt-8">
+            <div class="bg-slate-100 border-2 border-dashed border-slate-200 h-24 rounded-xl flex items-center justify-center text-[10px] text-slate-400">
+                [PLACE AD CODE HERE]
             </div>
         </div>
     </div>
